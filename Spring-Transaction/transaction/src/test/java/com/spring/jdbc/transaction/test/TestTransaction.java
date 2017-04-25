@@ -27,4 +27,11 @@ public class TestTransaction {
 		services.createCustomerDetails(customer);
 	}
 
+	public void testTransaction() {
+		ApplicationContext applicationContext = new ClassPathXmlApplicationContext("spring-config.xml");
+		CustomerDetailsIntf services = applicationContext.getBean("customerDetailsServices", CustomerDetailsIntf.class);
+		Address address = new Address("Bangalore", "India");
+		Customer customer = new Customer(2, "Siddhant", address);
+		services.createCustomerDetails(customer);
+	}
 }
