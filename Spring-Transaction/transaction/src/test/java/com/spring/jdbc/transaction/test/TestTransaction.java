@@ -3,35 +3,43 @@
  */
 package com.spring.jdbc.transaction.test;
 
+import org.junit.Ignore;
+import org.junit.Test;
+import org.junit.runner.RunWith;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.ApplicationContext;
-import org.springframework.context.support.ClassPathXmlApplicationContext;
+import org.springframework.test.context.ContextConfiguration;
+import org.springframework.test.context.junit4.SpringJUnit4ClassRunner;
 
 import com.spring.jdbc.transaction.bean.Address;
 import com.spring.jdbc.transaction.bean.Customer;
+import com.spring.jdbc.transaction.bean.StudentMark;
+import com.spring.jdbc.transaction.services.StudentMarkServices;
 import com.spring.jdbc.transaction.services.intf.CustomerDetailsIntf;
 
 /**
  * @author Siddhant sahu
  *
  */
+@RunWith(SpringJUnit4ClassRunner.class)
+@ContextConfiguration(locations = { "classpath:spring-config.xml" })
 public class TestTransaction {
+	@Autowired
+	public ApplicationContext applicationContext;
 
-	/**
-	 * @param args
-	 */
-	public static void main(String[] args) {
-		ApplicationContext applicationContext = new ClassPathXmlApplicationContext("spring-config.xml");
+	@Ignore
+	public void testTransaction() {
 		CustomerDetailsIntf services = applicationContext.getBean("customerDetailsServices", CustomerDetailsIntf.class);
 		Address address = new Address("Bangalore", "India");
-		Customer customer = new Customer(2, "Siddhant", address);
+		Customer customer = new Customer("Siddhant", address);
 		services.createCustomerDetails(customer);
 	}
 
-	public void testTransaction() {
-		ApplicationContext applicationContext = new ClassPathXmlApplicationContext("spring-config.xml");
-		CustomerDetailsIntf services = applicationContext.getBean("customerDetailsServices", CustomerDetailsIntf.class);
-		Address address = new Address("Bangalore", "India");
-		Customer customer = new Customer(2, "Siddhant", address);
-		services.createCustomerDetails(customer);
+	@Test
+	public void testProgrammeticTransaction() {
+		StudentMarkServices studentMarkServices = applicationContext.getBean("studentMarkServices",
+				StudentMarkServices.class);
+		StudentMark studentMark = new StudentMark(29, "siddhant", 100, 2009);
+		studentMarkServices.createStudent(studentMark);
 	}
 }

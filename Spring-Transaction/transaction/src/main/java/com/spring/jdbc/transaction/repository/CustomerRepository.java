@@ -23,12 +23,18 @@ public class CustomerRepository implements CustomerRepoIntf {
 	private JdbcTemplate template;
 
 	public void createCustomer(Customer customer) {
-		String sql = "insert into Customer (id, name) values (?,?)";
-		template.update(sql, customer.getId(), customer.getName());
+		String sql = "insert into Customer (name) values (?)";
+		template.update(sql, customer.getName());
 		LOGGER.info("Inserted into Customer Table Successfully");
+		sql = "select max(id) from Customer";
+		int id = template.queryForObject(sql, Integer.class);
+		customer.setId(id);
 		sql = "insert into Address (id, address,country) values (?,?,?)";
-		template.update(sql, customer.getId() - 1, customer.getAddress().getAddress(),
-				customer.getAddress().getCountry());
+		/*
+		 * create an error to check the transaction rollback. Like
+		 * customer.getId()-1
+		 */
+		template.update(sql, customer.getId(), customer.getAddress().getAddress(), customer.getAddress().getCountry());
 		LOGGER.info("Inserted into Address Table Successfully");
 	}
 }

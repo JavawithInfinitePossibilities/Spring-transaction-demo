@@ -19,9 +19,8 @@ public class Customer {
 		super();
 	}
 
-	public Customer(int id, String name, Address address) {
+	public Customer(String name, Address address) {
 		super();
-		this.id = id;
 		this.name = name;
 		this.address = address;
 	}
